@@ -9,6 +9,7 @@
 .deps
 
 .optional-deps
+*.DS_STORE
 
 *.pyc
 *.pyo
