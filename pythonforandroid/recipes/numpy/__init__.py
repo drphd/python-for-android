@@ -5,6 +5,8 @@ from multiprocessing import cpu_count
 from os.path import join
 import glob
 import sh
+import sys
+import os
 
 
 class NumpyRecipe(CompiledComponentsPythonRecipe):
@@ -15,6 +17,11 @@ class NumpyRecipe(CompiledComponentsPythonRecipe):
     depends = ['setuptools', 'cython']
     install_in_hostpython = True
     call_hostpython_via_targetpython = False
+    
+    #set environment variable on OSX
+    if sys.platform=='darwin':
+        info('Looks like youre on OSX.  Setting linux environment variable...')
+        os.environ['_PYTHON_HOST_PLATFORM'] = 'linux-aarch64'
 
     patches = [
         join('patches', 'hostnumpy-xlocale.patch'),
@@ -31,7 +38,7 @@ class NumpyRecipe(CompiledComponentsPythonRecipe):
             hostpython = sh.Command(self.real_hostpython_location)
             if self.install_in_hostpython:
                 shprint(hostpython, 'setup.py', 'clean', '--all', '--force', _env=env)
-            hostpython = sh.Command(self.hostpython_location)
+            #hostpython = sh.Command(self.hostpython_location)
             shprint(hostpython, 'setup.py', self.build_cmd, '-v',
                     _env=env, *self.setup_extra_args)
             build_dir = glob.glob('build/lib.*')[0]
