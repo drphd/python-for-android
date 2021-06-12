@@ -75,6 +75,7 @@ class OpenCVRecipe(NDKRecipe):
                     '-DANDROID_STANDALONE_TOOLCHAIN={}'.format(self.ctx.ndk_dir),
                     '-DANDROID_NATIVE_API_LEVEL={}'.format(self.ctx.ndk_api),
                     '-DANDROID_EXECUTABLE={}/tools/android'.format(env['ANDROID_SDK']),
+                    '-DANDROID_SDK_TOOLS_VERSION=30',
 
                     '-DCMAKE_TOOLCHAIN_FILE={}'.format(
                         join(self.ctx.ndk_dir, 'build', 'cmake',
